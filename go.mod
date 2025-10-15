@@ -1,4 +1,4 @@
-module example.com/rest-api
+module example.com/evently-rest-api
 
 go 1.24.0
 
