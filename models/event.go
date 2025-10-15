@@ -15,8 +15,6 @@ type Event struct {
 	UserID      int
 }
 
-var events = []Event{}
-
 func (e Event) Save() error {
 	// store the event to the database
 
@@ -61,4 +59,26 @@ func GetAllEvents() ([]Event, error) {
 		events = append(events, event)
 	}
 	return events, nil
+}
+
+func GetEvent(id int64) (*Event, error) {
+	stmt, err := db.DB.Prepare(`SELECT * FROM EVENTS WHERE id = ?`)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer stmt.Close()
+
+	var event Event
+	row := stmt.QueryRow(id)
+
+	err = row.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &event, nil
+
 }
