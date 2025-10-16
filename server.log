@@ -1,0 +1,15 @@
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /events                   --> example.com/evently-rest-api/routes.getEvents (3 handlers)
+[GIN-debug] GET    /events/:id               --> example.com/evently-rest-api/routes.getEvent (3 handlers)
+[GIN-debug] POST   /events                   --> example.com/evently-rest-api/routes.createEvent (3 handlers)
+[GIN-debug] PUT    /events/:id               --> example.com/evently-rest-api/routes.updateEvent (3 handlers)
+[GIN-debug] DELETE /events/:id               --> example.com/evently-rest-api/routes.deleteEvent (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8080
+[GIN-debug] [ERROR] listen tcp :8080: bind: address already in use
