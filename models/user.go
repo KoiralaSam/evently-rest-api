@@ -1,7 +1,9 @@
 package models
 
 import (
-	"example.com/evently-rest-api/db",
+	"errors"
+
+	"example.com/evently-rest-api/db"
 	"example.com/evently-rest-api/utils"
 )
 
@@ -11,7 +13,7 @@ type User struct {
 	Password string `binding:"required"`
 }
 
-func (u User) Save() error {
+func (u *User) Save() error {
 	query := "INSERT INTO users(email, password) VALUES(?, ?)"
 	stmt, err := db.DB.Prepare(query)
 
@@ -21,9 +23,13 @@ func (u User) Save() error {
 
 	defer stmt.Close()
 
-	hashedPassword,err := utils.HashPassword(u.Password)
+	hashedPassword, err := utils.HashPassword(u.Password)
 
-	result, err := stmt.Exec(u.Email, u.Password)
+	if err != nil {
+		return err
+	}
+
+	result, err := stmt.Exec(u.Email, hashedPassword)
 
 	if err != nil {
 		return err
@@ -31,4 +37,25 @@ func (u User) Save() error {
 	userID, err := result.LastInsertId()
 	u.ID = userID
 	return err
+}
+
+func (u User) ValidateCredentials() error {
+	query := "SELECT  id,password FROM users WHERE email = ?"
+
+	row := db.DB.QueryRow(query, u.Email)
+
+	var retrievedPassword string
+	err := row.Scan(&u.ID, &retrievedPassword)
+
+	if err != nil {
+		return errors.New("credentials are invalid")
+	}
+
+	passwordIsValid := utils.CheckHashAndPassword(u.Password, retrievedPassword)
+
+	if !passwordIsValid {
+		return errors.New("credentials invalid")
+	}
+
+	return nil
 }

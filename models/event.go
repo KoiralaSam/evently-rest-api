@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"example.com/evently-rest-api/db"
@@ -31,6 +32,7 @@ func (e Event) Save() error {
 	result, err := stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.UserID)
 
 	if err != nil {
+		fmt.Print(err)
 		return err
 	}
 
