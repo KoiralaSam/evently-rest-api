@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"example.com/evently-rest-api/models"
-	"example.com/evently-rest-api/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -37,22 +36,9 @@ func getEvent(ctx *gin.Context) {
 }
 
 func createEvent(ctx *gin.Context) {
-	token := ctx.Request.Header.Get("Authorization")
-
-	if token == "" {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Not Authorized"})
-		return
-	}
-
-	userId, err := utils.VerifyToken(token)
-
-	if err != nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "not authorized"})
-		return
-	}
 
 	var event models.Event
-	err = ctx.ShouldBindJSON(&event)
+	err := ctx.ShouldBindJSON(&event)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "could not parse data"})
@@ -60,7 +46,7 @@ func createEvent(ctx *gin.Context) {
 	}
 
 	event.ID = 1
-	event.UserID = userId
+	event.UserID = ctx.GetInt64("userId")
 
 	err = event.Save()
 
