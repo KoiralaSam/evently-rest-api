@@ -41,7 +41,6 @@ func login(ctx *gin.Context) {
 	err = user.ValidateCredentials()
 
 	if err != nil {
-		// credentials invalid -> 401 Unauthorized
 		ctx.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 		return
 	}
