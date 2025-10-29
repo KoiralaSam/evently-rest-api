@@ -54,18 +54,3 @@ func login(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "login sucessfull", "token": token})
 }
-
-// func getRegistration(ctx *gin.Context) {
-
-// 	if err != nil {
-// 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "could not parse id"})
-// 		return
-// 	}
-// 	event, err := models.GetEventByID(id)
-// 	if err != nil {
-// 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "could not fetch event"})
-// 		return
-// 	}
-
-// 	ctx.JSON(http.StatusOK, event)
-// }

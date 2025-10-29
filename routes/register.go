@@ -69,5 +69,19 @@ func cancelRegisteration(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"message": "user unregistered for event"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "user unregistered for event"})
+}
+
+func getRegistration(ctx *gin.Context) {
+	userId := ctx.GetInt64("userId")
+
+	registrations, err := models.GetAllRegistrations(userId)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to fetch registrations"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, registrations)
+
 }
